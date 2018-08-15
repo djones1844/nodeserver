@@ -30,18 +30,15 @@ const server = http.createServer((req, res) => {
   // Get Payload, if any
   let decoder = new StringDecoder('utf-8')
   let buffer = ''
-  req.on('data', data => buffer += decoder.write(data))
+  req.on('data', (data) => buffer += decoder.write(data))
   req.on('end', () => {
-  	bufer += decoder.end
-   
+  	buffer += decoder.end()
     // send the response
     res.end('Hello World\n')
-
     // log the request path
-    console.log('Request received with these headers: ', headers)
-
+    console.log('Request received with these headers: ', buffer)
   })
-  
+
 })
 
 // start the server and have it listen on port 3000
