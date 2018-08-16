@@ -7,6 +7,7 @@
 const http = require('http')
 const url = require('url')
 const StringDecoder = require('string_decoder').StringDecoder
+const config = require('./config')
 
 // server should respond to requests with a string
 const server = http.createServer((req, res) => {
