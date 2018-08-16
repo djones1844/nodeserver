@@ -32,7 +32,21 @@ const server = http.createServer((req, res) => {
   let buffer = ''
   req.on('data', (data) => buffer += decoder.write(data))
   req.on('end', () => {
-  	buffer += decoder.end()
+    buffer += decoder.end()
+    
+    // chose the correct router handler, if one not found use the notFound handler
+    let chosenHandler = typeof(router[trimmedPath]) !== 'undefined' ? router[trimmedPath] : handlers.notFound
+
+    // construct the data object to send to the handler
+    let data = {
+      'trimmedPath' : trimmedPath,
+      'queryStringObject' : queryStringObject,
+      'method' : method,
+      'headers' : headers,
+      'payload' : payload
+    }
+
+
     // send the response
     res.end('Hello World\n')
     // log the request path
@@ -44,4 +58,22 @@ const server = http.createServer((req, res) => {
 // start the server and have it listen on port 3000
 server.listen(3000, () => console.log('The server is listening on port 3000 now'))
 
+// define the router's handlers
+let handlers = {}
 
+// sample hanler
+handlers.sample = (data, callback) => {
+  // Callback a http status code, and a payload object
+  callback(406, {'name' : 'sample handler'})
+
+}
+
+// not found handler
+handlers.notFound = (data, callback) => {
+  callback(404)
+} 
+
+// defining a request router
+let router = {
+  'sample' : handlers.sample
+}
