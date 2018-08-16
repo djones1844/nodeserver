@@ -43,7 +43,7 @@ const server = http.createServer((req, res) => {
       'queryStringObject' : queryStringObject,
       'method' : method,
       'headers' : headers,
-      'payload' : payload
+      'payload' : buffer
     }
 
     // routh the request specivied in the router
@@ -60,12 +60,11 @@ const server = http.createServer((req, res) => {
       // return the response
       res.writeHead(statusCode)
       res.end(payloadstring)
-      
+       // log the request path
+       console.log('Returning this response: ', statusCode, payloadstring)
+
     })    
 
-    
-    // log the request path
-    console.log('Request received with these headers: ', buffer)
   })
 
 })
@@ -74,7 +73,7 @@ const server = http.createServer((req, res) => {
 server.listen(3000, () => console.log('The server is listening on port 3000 now'))
 
 // define the router's handlers
-let handlers = {}
+let handlers =  {}
 
 // sample hanler
 handlers.sample = (data, callback) => {
