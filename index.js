@@ -5,13 +5,32 @@
 
  // Dependencies
 const http = require('http')
+const https = require('https')
 const url = require('url')
 const StringDecoder = require('string_decoder').StringDecoder
 const config = require('./config')
+const fs = require('fs')
 
-// server should respond to requests with a string
-const server = http.createServer((req, res) => {
+// create the http server
+const httpServer = http.createServer((req, res) => {
+  unifiedServer(req, res)
+})
+let httpsServerOptions = {
+  'key' : fs.readFileSync('./https/key.pem'),
+  'cert' : fs.readFileSync('./https/cert.pem')
+}
+const httpsServer = https.createServer(httpsServerOptions, (req, res) => {
+  unifiedServer(req, res)
+})
 
+// start the servers
+httpServer.listen(config.httpPort, () => console.log('The server is listening on port: '+config.httpPort))
+
+httpsServer.listen(config.httpsPort, () => console.log('The server is listening on port: '+config.httpsPort))
+
+// All the server logic for both http and https
+let unifiedServer = function(req, res){
+ 
   // get url and parse it
   let parseUrl = url.parse(req.url, true)
 
@@ -25,7 +44,7 @@ const server = http.createServer((req, res) => {
   // get the HTTP Method
   let method = req.method.toLowerCase()
 
-  // get the headers as an object
+  // get the headers as an object   
   let headers = req.headers 
  
   // Get Payload, if any
@@ -67,13 +86,11 @@ const server = http.createServer((req, res) => {
        console.log('Returning this response: ', statusCode, payloadstring)
 
     })    
-
   })
+}
 
-})
 
-// start the server and have it listen on port 3000
-server.listen(3000, () => console.log('The server is listening on port 3000 now'))
+
 
 // define the router's handlers
 let handlers =  {}
@@ -82,7 +99,6 @@ let handlers =  {}
 handlers.sample = (data, callback) => {
   // Callback a http status code, and a payload object
   callback(406, {'name' : 'sample handler'})
-
 }
 
 // not found handler

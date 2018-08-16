@@ -7,18 +7,20 @@
 
  // staging object
  environments.staging = {
-     'port' : 3000,
+     'httpPort' : 3000,
+     'httpsPort' : 30001,
      'envName' : 'staging'
  }
 
  // production object
  environments.production = {
-     'port' : 5000,
+     'httpPort' : 5000,
+     'httpsPort' : 5001,
      'envName': 'production'
  }
 
  // choose environment
- let currentEnvironment = typeof(proccess.env.NODE_ENV) == 'string' ? process.env.NODE_ENV.toLowerCase(): ''
+ let currentEnvironment = typeof(process.env.NODE_ENV) == 'string' ? process.env.NODE_ENV.toLowerCase(): ''
 
 // check env validity and default to staging
 let environmentToExport = typeof(environments[currentEnvironment]) == 'object' ? environments[currentEnvironment] : environments.staging
