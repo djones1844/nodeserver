@@ -47,7 +47,7 @@ const server = http.createServer((req, res) => {
     }
 
     // routh the request specivied in the router
-    chosenHandler(data, (statusCode, payload) => {
+    chosenHandler(data, (statusCode, payload) => {      
       // Use the status code called back by the handler, or default to 200
       statusCode = typeof(statusCode) == 'number' ? statusCode : 200
      
@@ -58,6 +58,8 @@ const server = http.createServer((req, res) => {
       let payloadstring = JSON.stringify(payload)
 
       // return the response
+      // specify payload/buffer as json
+      res.setHeader('Content-Type', 'application/json')
       res.writeHead(statusCode)
       res.end(payloadstring)
        // log the request path
