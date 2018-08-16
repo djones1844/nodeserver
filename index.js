@@ -15,6 +15,8 @@ const fs = require('fs')
 const httpServer = http.createServer((req, res) => {
   unifiedServer(req, res)
 })
+
+// create the https server
 let httpsServerOptions = {
   'key' : fs.readFileSync('./https/key.pem'),
   'cert' : fs.readFileSync('./https/cert.pem')
@@ -95,11 +97,11 @@ let unifiedServer = function(req, res){
 // define the router's handlers
 let handlers =  {}
 
-// sample hanler
-handlers.sample = (data, callback) => {
-  // Callback a http status code, and a payload object
-  callback(406, {'name' : 'sample handler'})
+// Ping handler
+handlers.ping = (data, callback) => {
+  callback(200)    
 }
+
 
 // not found handler
 handlers.notFound = (data, callback) => {
@@ -108,5 +110,5 @@ handlers.notFound = (data, callback) => {
 
 // defining a request router
 let router = {
-  'sample' : handlers.sample
+  'ping' : handlers.ping
 }
