@@ -46,9 +46,24 @@ const server = http.createServer((req, res) => {
       'payload' : payload
     }
 
+    // routh the request specivied in the router
+    chosenHandler(data, (statusCode, payload) => {
+      // Use the status code called back by the handler, or default to 200
+      statusCode = typeof(statusCode) == 'number' ? statusCode : 200
+     
+      // used the payload calld by the handler or default to 
+      payload = typeof(payload) == 'object' ? payload : {}
 
-    // send the response
-    res.end('Hello World\n')
+      // Covert payload to string
+      let payloadstring = JSON.stringify(payload)
+
+      // return the response
+      res.writeHead(statusCode)
+      res.end(payloadstring)
+      
+    })    
+
+    
     // log the request path
     console.log('Request received with these headers: ', buffer)
   })
