@@ -8,8 +8,10 @@ const http = require('http')
 const https = require('https')
 const url = require('url')
 const StringDecoder = require('string_decoder').StringDecoder
-const config = require('./config')
+const config = require('./lib/config')
 const fs = require('fs')
+const handlers = require('./lib/handlers')
+const helpers = require('./lib/helpers')
 
  // Instantiate the HTTP server
  let httpServer = http.createServer((req, res) => {
@@ -37,7 +39,7 @@ httpsServer.listen(config.httpsPort,function(){
 })
 
 // All the server logic for both the http and https server
-let unifiedServer = function(req, res) {
+let unifiedServer = (req, res) => {
 
   // Parse the url
   let parsedUrl = url.parse(req.url, true)
@@ -58,7 +60,7 @@ let unifiedServer = function(req, res) {
   // Get the payload,if any
   let decoder = new StringDecoder('utf-8')
   let buffer = ''
-  req.on('data', function(data) {
+  req.on('data', (data) => {
       buffer += decoder.write(data)
   })
   req.on('end', () => {
@@ -73,7 +75,7 @@ let unifiedServer = function(req, res) {
         'queryStringObject' : queryStringObject,
         'method' : method,
         'headers' : headers,
-        'payload' : buffer
+        'payload' : helpers.parseJsonToObject(buffer)    
       }
 
       // Route the request to the handler specified in the router
@@ -95,23 +97,15 @@ let unifiedServer = function(req, res) {
         console.log(trimmedPath, statusCode)
       })
 
+      // log the request path
+      //console.log('Returning this response: ', statusCode, payloadString)
+
   })
-}
-
-// Define all the handlers
-let handlers = {}
-
-// Ping handler
-handlers.ping = (data,callback) => {
-    callback(200)
-}
-
-// Not-Found handler
-handlers.notFound = (data, callback) => {
-  callback(404)
 }
 
 // Define the request router
 let router = {
-  'ping' : handlers.ping
+  'ping' : handlers.ping,
+  'users' : handlers.users
+  
 }
