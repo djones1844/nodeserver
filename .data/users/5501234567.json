@@ -1,7 +1,7 @@
 {
-    "firstname": "John",
-    "lastname": "Smith",
-    "phone": "5501234567",
-    "hashedPassword": "24e5420589e42ef840676c7cec509641806149c584794746fe92642a2209aa76",
-    "tosAgreement": true
+  "firstname": "John",
+  "lastname": "Smith",
+  "phone": "5501234567",
+  "hashedPassword": "3878d4fab3529c9d208619c979d81b23712685c388684f96be0d1655fb48e44d",
+  "tosAgreement": true
 }

@@ -1,6 +1,5 @@
 /*
  * Primary file for API
- *
  */
 
 // Dependencies
@@ -79,7 +78,7 @@ let unifiedServer = (req, res) => {
       }
 
       // Route the request to the handler specified in the router
-      chosenHandler(data, (statusCode,payload) => {
+      chosenHandler(data, (statusCode, payload) => {
 
         // Use the status code returned from the handler, or set the default status code to 200
         statusCode = typeof(statusCode) == 'number' ? statusCode : 200
@@ -96,16 +95,14 @@ let unifiedServer = (req, res) => {
         res.end(payloadString)
         console.log(trimmedPath, statusCode)
       })
-
       // log the request path
       //console.log('Returning this response: ', statusCode, payloadString)
-
   })
 }
 
 // Define the request router
 let router = {
   'ping' : handlers.ping,
-  'users' : handlers.users
-  
+  'users' : handlers.users,
+  'tokens' : handlers.tokens
 }
