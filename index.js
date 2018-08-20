@@ -67,7 +67,7 @@ let unifiedServer = (req, res) => {
 
       // Check the router for a matching path for a handler. If one is not found, use the notFound handler instead.
       let chosenHandler = typeof(router[trimmedPath]) !== 'undefined' ? router[trimmedPath] : handlers.notFound
-
+      
       // Construct the data object to send to the handler
       let data = {
         'trimmedPath' : trimmedPath,
@@ -93,7 +93,7 @@ let unifiedServer = (req, res) => {
         res.setHeader('Content-Type', 'application/json')
         res.writeHead(statusCode)
         res.end(payloadString)
-        console.log(trimmedPath, statusCode)
+
       })
       // log the request path
       //console.log('Returning this response: ', statusCode, payloadString)
